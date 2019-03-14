@@ -5,26 +5,29 @@
  */
 package model;
 
+import java.sql.Date;
+
 /**
  *
  * @author Johnathan
  */
 public class Produto {
 
-    private int idProduto;
+    private Integer idProduto;
     private String nome;
     private String descricao;
-    private float precoCompra;
-    private float precoVenda;
+    private Double precoCompra;
+    private Double precoVenda;
     private int quantidade;
-    private boolean status;
+    private boolean disponivel;
+    private Date dtCadastro;
 
     public Produto()
     {
         
     }
     
-    public Produto(int idProduto, String nome, String descricao, float precoCompra, float precoVenda, int quantidade, boolean status)
+    public Produto(Integer idProduto, String nome, String descricao, Double precoCompra, Double precoVenda, int quantidade, boolean disponivel)
     {
      this.idProduto = idProduto;
      this.nome = nome;
@@ -32,7 +35,8 @@ public class Produto {
      this.precoCompra = precoCompra;
      this.precoVenda = precoVenda;
      this.quantidade = quantidade;
-     this.status = status;
+     this.disponivel = disponivel;
+//     this.dtCadastro = dtCadastro;
     }
     
     public int getIdProduto() {
@@ -59,19 +63,19 @@ public class Produto {
         this.descricao = descricao;
     }
 
-    public float getPrecoCompra() {
+    public Double getPrecoCompra() {
         return precoCompra;
     }
 
-    public void setPrecoCompra(float precoCompra) {
+    public void setPrecoCompra(Double precoCompra) {
         this.precoCompra = precoCompra;
     }
 
-    public float getPrecoVenda() {
+    public Double getPrecoVenda() {
         return precoVenda;
     }
 
-    public void setPrecoVenda(float precoVenda) {
+    public void setPrecoVenda(Double precoVenda) {
         this.precoVenda = precoVenda;
     }
 
@@ -83,11 +87,32 @@ public class Produto {
         this.quantidade = quantidade;
     }
 
-    public boolean isStatus() {
-        return status;
+    public boolean isDisponivel() {
+        return disponivel;
     }
 
-    public void setStatus(boolean status) {
-        this.status = status;
+    public void setDisponivel(boolean disponivel) {
+        this.disponivel = disponivel;
     }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public Date getDtCadastro() {
+        return dtCadastro;
+    }
+
+    public void setDtCadastro(Date dtCadastro) {
+        this.dtCadastro = dtCadastro;
+    }
+
+    public Object getDisponivel() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
 }
