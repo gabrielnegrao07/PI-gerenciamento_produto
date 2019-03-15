@@ -5,17 +5,17 @@
  */
 package dao;
 
-import model.Produto;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.Categoria;
+import model.ProdutoCategoria;
 import utils.GerenciadorConexao;
 
 /**
@@ -23,7 +23,7 @@ import utils.GerenciadorConexao;
  * @author lojademoveis.com.br
  * @see Controller.ProdutoController
  */
-public class ProdutoDAO {
+public class ProdutoCategoriaDAO {
     
     private static final String DRIVER = "com.mysql.jdbc.Driver";
     
@@ -37,27 +37,21 @@ public class ProdutoDAO {
     /**
      * Método para inserir produtos no banco de dados.
      * 
-     * @param p objeto do tipo Produto
+     * @param pc objeto do tipo Produto
      * @return <code>boolean</code> true: sucesso, false: falha;
      */
-    public static boolean salvar(Produto p)
+    public static boolean salvar(ProdutoCategoria pc)
     {
         
         boolean retorno = false;
         
         //Crio um comando PreparedStatement utilizando minha classe de conexão
-        PreparedStatement comando = GerenciadorConexao.getPreparedStatement("INSERT INTO Produto (Nome,Descricao,Preco_Compra,Preco_Venda,Quantidade, Disponivel, DT_Cadastro) VALUES(?,?,?,?);");
-        
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        PreparedStatement comando = GerenciadorConexao.getPreparedStatement("INSERT INTO ProdutoCategoria (ID_PRODUTO, ID_CATEGORIA) VALUES(?,?);");
         
         try {
-            comando.setString(1,p.getNome());
-            comando.setString(2,p.getdescricao());
-            comando.setString(3,String.valueOf(p.getPrecoCompra()));
-            comando.setString(4,String.valueOf(p.getPrecoVenda()));
-            comando.setString(5, String.valueOf(p.getQuantidade()));
-            comando.setString(6, String.valueOf(p.isDisponivel()));
-            comando.setString(7, String.valueOf(p.getDtCadastro()));
+            comando.setString(1,String.valueOf(pc.getIdProduto()));
+            comando.setString(2,String.valueOf(pc.getIdCategoria()));
+            
             
             retorno = GerenciadorConexao.executarUpdate();
             
@@ -130,10 +124,16 @@ public class ProdutoDAO {
         return retorno;
                        
     }
-    
-    public static Produto buscaProduto(String produtoNome ){
-         Produto p = new Produto();
-         try {
+    /**
+     * Método para retornar todos os produtos do banco.
+     * 
+     * @return <code>ArrayList(Produto)</code> retorna todos os clientes cadastrados no banco de dados;
+     */
+    public static ArrayList<Categoria> getCategorias()
+    {
+        ArrayList<Categoria> listaCategorias = new ArrayList<>();
+        
+        try {
             //return SimulaDB.getInstance().getClientes();
             
             //Tento carregar o driver para conectar ao MySQL
@@ -143,21 +143,21 @@ public class ProdutoDAO {
             
             Statement comando = conexao.createStatement();
             
-            ResultSet rs = comando.executeQuery("SELECT * FROM Produto WHERE "+ produtoNome + ";");
-   
-            p.setIdProduto(rs.getInt("Id"));
-            p.setNome(rs.getString("Nome"));
-            p.setDescricao(rs.getNString("Descricao"));
-            p.setPrecoCompra(rs.getDouble("Preco_Compra"));
-            p.setPrecoVenda(rs.getDouble("Preco_Venda"));
-            p.setDisponivel(rs.getBoolean("Disponivel"));
-            p.setQuantidade(rs.getInt("Quantidade"));
+            ResultSet rs = comando.executeQuery("SELECT * FROM Categoria;");
+            while(rs.next())
+            {
+                Categoria c = new Categoria();
+                c.setId(rs.getInt("Id"));
+                c.setNome(rs.getString("Nome"));
+                
+                listaCategorias.add(c);
+            }
             rs.close();
             
         } catch (ClassNotFoundException ex) {
-            p = null;
+            listaCategorias = null;
         } catch (SQLException ex) {
-            p = null;
+            listaCategorias = null;
         }finally{
         
             try {
@@ -171,72 +171,14 @@ public class ProdutoDAO {
                     }
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(CategoriaDAO.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ProdutoCategoriaDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
         
         }
         
-        return p;
-        
+        return listaCategorias;
+       
     }
-//    /**
-//     * Método para retornar todos os produtos do banco.
-//     * 
-//     * @return <code>ArrayList(Produto)</code> retorna todos os clientes cadastrados no banco de dados;
-//     */
-//    public static ArrayList<Produto> getProdutos()
-//    {
-//        ArrayList<Produto> listaProdutos = new ArrayList<>();
-//        
-//        try {
-//            //return SimulaDB.getInstance().getClientes();
-//            
-//            //Tento carregar o driver para conectar ao MySQL
-//            Class.forName(DRIVER);
-//            url = "jdbc:mysql://" + SERVIDOR + ":3306/" + BASEDADOS;
-//            conexao = DriverManager.getConnection(url,LOGIN,SENHA);
-//            
-//            Statement comando = conexao.createStatement();
-//            
-//            ResultSet rs = comando.executeQuery("SELECT * FROM Produto;");
-//            while(rs.next())
-//            {
-//                Produto p = new Produto();
-//                p.setId(rs.getInt("IdProduto"));
-//                p.setModelo(rs.getString("Modelo"));
-//                p.setTipo(rs.getString("Tipo"));
-//                p.setPreco(rs.getDouble("Preco"));
-//                p.setQuantidade(rs.getInt("Quantidade"));
-//                
-//                listaProdutos.add(p);
-//            }
-//            rs.close();
-//            
-//        } catch (ClassNotFoundException ex) {
-//            listaProdutos = null;
-//        } catch (SQLException ex) {
-//            listaProdutos = null;
-//        }finally{
-//        
-//            try {
-//                if(conexao!=null)
-//                {
-//                    if(!conexao.isClosed())
-//                        conexao.close();
-//                    else
-//                    {
-//                        System.out.println("Conexão já fechada");
-//                    }
-//                }
-//            } catch (SQLException ex) {
-//                Logger.getLogger(ClienteDAO.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        
-//        }
-//        
-//        return listaProdutos;
-//       
-//    }
 //    
 //    
 //    public static ArrayList<Produto> getProdutosPorModelo(String pModelo)

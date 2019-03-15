@@ -26,10 +26,10 @@ import utils.GerenciadorConexao;
  */
 public class CategoriaDAO {
     
-    private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
+    private static final String DRIVER = "com.mysql.jdbc.Driver";
     
     private static final String SERVIDOR = "localhost";     //servidor de banco de dados
-    private static final String BASEDADOS = "produtobd";      //nome da base de dados
+    private static final String BASEDADOS = "produtodb";      //nome da base de dados
     private static final String LOGIN = "root";             //nome de um usuário do banco de dados
     private static final String SENHA = "";                 //sua senha de acesso
     private static String url = "";
@@ -41,36 +41,7 @@ public class CategoriaDAO {
      * @param p objeto do tipo Produto
      * @return <code>boolean</code> true: sucesso, false: falha;
      */
-    public static boolean salvar(Produto p)
-    {
-        
-        boolean retorno = false;
-        
-        //Crio um comando PreparedStatement utilizando minha classe de conexão
-        PreparedStatement comando = GerenciadorConexao.getPreparedStatement("INSERT INTO Produto (Modelo,Tipo,Preco,Quantidade) VALUES(?,?,?,?);");
-        
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-        
-        try {
-            comando.setString(1,p.getNome());
-            comando.setString(2,p.getdescricao());
-            comando.setString(3,String.valueOf(p.getPrecoCompra()));
-            comando.setString(4,String.valueOf(p.getPrecoVenda()));
-            comando.setString(5, String.valueOf(p.getQuantidade()));
-            comando.setString(6, String.valueOf(p.isDisponivel()));
-            comando.setString(7, String.valueOf(p.getDtCadastro()));
-            
-            retorno = GerenciadorConexao.executarUpdate();
-            
-        } catch (SQLException ex) {
-            retorno = false;
-        }
-        finally{
-            GerenciadorConexao.fecharConexao();
-        }
-        
-        return retorno;
-    }
+    
     
     /**
      * Método para atualizar os produtos do banco de dados.
@@ -154,7 +125,7 @@ public class CategoriaDAO {
             while(rs.next())
             {
                 Categoria c = new Categoria();
-//                c.setId(rs.getInt("Id"));
+                c.setId(rs.getInt("Id"));
                 c.setNome(rs.getString("Nome"));
                 
                 listaCategorias.add(c);
@@ -242,5 +213,48 @@ public class CategoriaDAO {
 //       
 //        
 //    }
-//    
+    
+    public static Categoria buscaCategoria(String categoria){
+         Categoria c = new Categoria();
+         try {
+            //return SimulaDB.getInstance().getClientes();
+            
+            //Tento carregar o driver para conectar ao MySQL
+            Class.forName(DRIVER);
+            url = "jdbc:mysql://" + SERVIDOR + ":3306/" + BASEDADOS;
+            conexao = DriverManager.getConnection(url,LOGIN,SENHA);
+            
+            Statement comando = conexao.createStatement();
+            
+            ResultSet rs = comando.executeQuery("SELECT * FROM Categoria WHERE "+ categoria + ";");
+           
+            c.setId(rs.getInt("Id"));
+            c.setNome(rs.getString("Nome"));
+            rs.close();
+            
+        } catch (ClassNotFoundException ex) {
+            c = null;
+        } catch (SQLException ex) {
+            c = null;
+        }finally{
+        
+            try {
+                if(conexao!=null)
+                {
+                    if(!conexao.isClosed())
+                        conexao.close();
+                    else
+                    {
+                        System.out.println("Conexão já fechada");
+                    }
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(CategoriaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        
+        }
+        
+        return c;
+        
+    }
 }

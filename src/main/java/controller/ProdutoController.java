@@ -21,8 +21,12 @@ public class ProdutoController {
 //     */
     public static boolean Salvar(String nome, String descricao, Double precoCompra, Double precoVenda, int quantidade, boolean disponivel) {
         //Salvo na memória
-        Produto pr = new Produto(null, nome, descricao, precoCompra, precoVenda, quantidade, disponivel);
+        Produto pr = new Produto(nome, descricao, precoCompra, precoVenda, quantidade, disponivel);
         return ProdutoDAO.salvar(pr);
+    }
+    
+    public static Produto getProduto(String produtoNome){
+        return ProdutoDAO.buscaProduto(produtoNome);
     }
     
 //    /**

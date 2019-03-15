@@ -2,22 +2,22 @@ package model;
 
 public class ProdutoCategoria {
     
-    private Produto produto;
-    private Categoria categoria;
+    private Integer idProduto;
+    private Integer idCategoria;
 
-    public Produto getProduto() {
-        return produto;
+    public Integer getIdProduto() {
+        return idProduto;
     }
 
-    public void setProduto(Produto produto) {
-        this.produto = produto;
+    public void setIdProduto(Produto produto) {
+        this.idProduto = produto.getIdProduto();
     }
 
-    public Categoria getCategoria() {
-        return categoria;
+    public Integer getIdCategoria() {
+        return idCategoria;
     }
 
-    public void setCategoria(Categoria categoria) {
-        this.categoria = categoria;
+    public void setIdCategoria(Categoria categoria) {
+        this.idCategoria = categoria.getId();
     }   
 }

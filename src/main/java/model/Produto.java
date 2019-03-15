@@ -18,7 +18,7 @@ public class Produto {
     private String descricao;
     private Double precoCompra;
     private Double precoVenda;
-    private int quantidade;
+    private Integer quantidade;
     private boolean disponivel;
     private Date dtCadastro;
 
@@ -27,23 +27,22 @@ public class Produto {
         
     }
     
-    public Produto(Integer idProduto, String nome, String descricao, Double precoCompra, Double precoVenda, int quantidade, boolean disponivel)
+    public Produto(String nome, String descricao, Double precoCompra, Double precoVenda, Integer quantidade, boolean disponivel)
     {
-     this.idProduto = idProduto;
      this.nome = nome;
      this.descricao = descricao;
      this.precoCompra = precoCompra;
      this.precoVenda = precoVenda;
      this.quantidade = quantidade;
      this.disponivel = disponivel;
-//     this.dtCadastro = dtCadastro;
+     this.dtCadastro = new Date(System.currentTimeMillis());
     }
     
-    public int getIdProduto() {
+    public Integer getIdProduto() {
         return idProduto;
     }
 
-    public void setIdProduto(int idProduto) {
+    public void setIdProduto(Integer idProduto) {
         this.idProduto = idProduto;
     }
 
@@ -79,11 +78,11 @@ public class Produto {
         this.precoVenda = precoVenda;
     }
 
-    public int getQuantidade() {
+    public Integer getQuantidade() {
         return quantidade;
     }
 
-    public void setQuantidade(int quantidade) {
+    public void setQuantidade(Integer quantidade) {
         this.quantidade = quantidade;
     }
 
@@ -105,10 +104,6 @@ public class Produto {
 
     public Date getDtCadastro() {
         return dtCadastro;
-    }
-
-    public void setDtCadastro(Date dtCadastro) {
-        this.dtCadastro = dtCadastro;
     }
 
     public Object getDisponivel() {

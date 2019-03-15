@@ -1,17 +1,15 @@
 package controller;
 
-import dao.CategoriaDAO;
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import dao.ProdutoCategoriaDAO;
+import model.Produto;
 import model.Categoria;
+import model.ProdutoCategoria;
 
 /**
  * 
  * @author lojademoveis.com.br
  */
-public class CategoriaController {
+public class ProdutoCategoriaController {
 
 //    /**
 //     * Método para salvar um produto na memória ou na base de dados.
@@ -21,11 +19,13 @@ public class CategoriaController {
 //     * @param prPreco double valor de venda do produto
 //     * @return <code>boolean</code> true: sucesso, false: falho
 //     */
-//    public static boolean Salvar(String nome, String descricao, Double precoCompra, Double precoVenda, int quantidade, boolean disponivel) {
-//        //Salvo na memória
-//        Produto pr = new Produto(null, nome, descricao, precoCompra, precoVenda, quantidade, disponivel);
-//        return ProdutoDAO.salvar(pr);
-//    }
+    public static boolean Salvar(Produto produto, Categoria categoria) {
+        //Salvo na memória
+        ProdutoCategoria pr = new ProdutoCategoria();
+        pr.setIdProduto(produto);
+        pr.setIdCategoria(categoria);
+        return ProdutoCategoriaDAO.salvar(pr);
+    }
     
 //    /**
 //     * Método para excluir determinado produto.
@@ -52,30 +52,26 @@ public class CategoriaController {
 //
 //    }
 //
-    /**
-     * Transforma uma lista de objetos Cliente em uma lista de Strings
-     *
-     * @return lista de string
-     */
-    public static ArrayList<String[]> getCategorias() {
-       ArrayList<Categoria> categorias = CategoriaDAO.getCategorias();
-       ArrayList<String[]> listaCategorias = new ArrayList<>();
+//    /**
+//     * Transforma uma lista de objetos Cliente em uma lista de Strings
+//     *
+//     * @return lista de string
+//     */
+//    public static ArrayList<String[]> getProdutos() {
+//        ArrayList<Produto> produtos = ProdutoDAO.getProdutos();
+//        ArrayList<String[]> listaProdutos = new ArrayList<>();
+//
+//        for (int i = 0; i < produtos.size(); i++) {
+//            listaProdutos.add(new String[]{String.valueOf(produtos.get(i).getId()),
+//                 produtos.get(i).getModelo(),
+//                 produtos.get(i).getTipo(),
+//                 String.valueOf(produtos.get(i).getPreco()),
+//                 String.valueOf(produtos.get(i).getQuantidade())});
+//
+//        }
+//
+//        return listaProdutos;
+//
+//    }
 
-        for (int i = 0; i < categorias.size(); i++) {
-            listaCategorias.add(new String[]{String.valueOf(categorias.get(i).getId()),
-                 categorias.get(i).getNome()});
-
-        }
-
-        return listaCategorias;
-
-    }
-    
-     public static ArrayList<Categoria> getCategoriasObject() {
-        return CategoriaDAO.getCategorias();
-    }
-     
-     public static Categoria getCategoria(String categoria){
-         return CategoriaDAO.buscaCategoria(categoria);
-     }
 }

@@ -16,13 +16,13 @@ import java.util.logging.Logger;
 public class GerenciadorConexao {
 
     public static String status = "Não conectado";
-    public static String driverName = "com.mysql.cj.jdbc.Driver";  //A partir da versao 8.0, mudou para com.mysql.cj.jdbc.Driver (Connector/J)                   
+    public static String driverName = "com.mysql.jdbc.Driver";  //A partir da versao 8.0, mudou para com.mysql.cj.jdbc.Driver (Connector/J)                   
     public static String serverName = "localhost";              //servidor de banco de dados
-    public static String mydatabase = "produtobd";                //nome da base de dados
+    public static String mydatabase = "produtodb";                //nome da base de dados
     public static String username = "root";                     //nome de um usuário de seu BD      
     public static String password = "";                         //sua senha de acesso
 
-    public static String url = "jdbc:mysql://localhost:3306/produtobd?useTimezone=true&serverTimezone=UTC&useSSL=false";
+    public static String url = "jdbc:mysql://localhost:3306/produtodb?useTimezone=true&serverTimezone=UTC&useSSL=false";
 
     public static Connection conexao;
     public static PreparedStatement comando;
